@@ -1,0 +1,79 @@
+version: '3.9'
+
+services:
+
+  mongodb:
+    image: mongo:7.0
+    container_name: collab-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - collab-net
+
+  user-service:
+    build: ./user-service
+    container_name: collab-user-service
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - MONGO_URI=mongodb://mongodb:27017/collaboration
+    depends_on:
+      - mongodb
+    networks:
+      - collab-net
+    restart: unless-stopped
+
+  messaging-service:
+    build: ./messaging-service
+    container_name: collab-messaging-service
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - MONGO_URI=mongodb://mongodb:27017/collaboration
+      - NOTIFICATION_SERVICE_URL=http://notification-service:3003
+      - USER_SERVICE_URL=http://user-service:3001
+    depends_on:
+      - mongodb
+    networks:
+      - collab-net
+    restart: unless-stopped
+
+  notification-service:
+    build: ./notification-service
+    container_name: collab-notification-service
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+    networks:
+      - collab-net
+    restart: unless-stopped
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: collab-api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - USER_SERVICE_URL=http://user-service:3001
+      - MESSAGING_SERVICE_URL=http://messaging-service:3002
+      - NOTIFICATION_SERVICE_URL=http://notification-service:3003
+    depends_on:
+      - user-service
+      - messaging-service
+      - notification-service
+    networks:
+      - collab-net
+    restart: unless-stopped
+
+volumes:
+  mongo-data:
+
+networks:
+  collab-net:
+    driver: bridge

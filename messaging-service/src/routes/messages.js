@@ -3,14 +3,25 @@ const router = express.Router()
 const axios = require('axios')
 const Message = require('../models/Message')
 
-const NOTIFICATION_SERVICE_URL = process.env.NOTIFICATION_SERVICE_URL || 'http://localhost:3003'
 
+const NOTIFICATION_SERVICE_URL = process.env.NOTIFICATION_SERVICE_URL || 'http://localhost:3003'
+const USER_SERVICE_URL = process.env.USER_SERVICE_URL || 'http://localhost:3001'
 // Helper function to send notification
 async function sendNotification(payload) {
   try {
     await axios.post(`${NOTIFICATION_SERVICE_URL}/notifications`, payload)
   } catch (err) {
     console.warn('Could not reach Notification Service:', err.message)
+  }
+}
+
+// Helper function to validate user exists
+async function validateUser(userId) {
+  try {
+    const response = await axios.get(`${USER_SERVICE_URL}/users/${userId}`)
+    return response.data.user
+  } catch (err) {
+    return null
   }
 }
 
@@ -38,12 +49,23 @@ router.get('/:id', async (req, res) => {
 })
 
 // POST send message
+// POST send message
 router.post('/', async (req, res) => {
   try {
     const { senderId, senderName, receiverId, content, type } = req.body
+
+    // Validate sender exists
+    const user = await validateUser(senderId)
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        error: 'Invalid sender. User does not exist.'
+      })
+    }
+
     const message = await Message.create({
       senderId,
-      senderName,
+      senderName: user.displayName || senderName,
       receiverId,
       content,
       type
@@ -54,7 +76,7 @@ router.post('/', async (req, res) => {
       type: 'new_message',
       messageId: message._id,
       senderId,
-      senderName,
+      senderName: user.displayName || senderName,
       receiverId: receiverId || 'broadcast',
       preview: content.substring(0, 80)
     })
