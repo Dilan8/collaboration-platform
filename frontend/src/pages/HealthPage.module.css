@@ -1,0 +1,153 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.header h2 { font-size: 1.1rem; }
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.lastChecked {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.refreshBtn {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  border-radius: var(--radius);
+}
+
+.refreshBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.summary {
+  padding: 1.5rem 1.5rem 0;
+}
+
+.summaryCard {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.allOnline {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: var(--success);
+}
+
+.someOffline {
+  background: rgba(248, 113, 113, 0.1);
+  border-color: var(--danger);
+}
+
+.summaryCount {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.summaryLabel {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  transition: border-color 0.2s;
+}
+
+.online  { border-top: 3px solid var(--success); }
+.offline { border-top: 3px solid var(--danger);  }
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.serviceName {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.statusBadge {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+
+.badgeOnline {
+  background: rgba(74, 222, 128, 0.15);
+  color: var(--success);
+}
+
+.badgeOffline {
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--danger);
+}
+
+.cardDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detail {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+.detailLabel { color: var(--text-muted); }
+.detailValue { font-weight: 600; }
+
+.dbConnected    { color: var(--success); }
+.dbDisconnected { color: var(--danger);  }
+
+.offlineMsg {
+  font-size: 0.8rem;
+  color: var(--danger);
+  margin-top: 0.25rem;
+}
+
+.loading {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 2rem;
+  grid-column: 1 / -1;
+}
