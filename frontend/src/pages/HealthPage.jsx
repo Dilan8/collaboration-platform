@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react'
 import styles from './HealthPage.module.css'
 
 const SERVICES = [
-  { name: 'API Gateway',         url: 'http://localhost:3000/health' },
-  { name: 'User Service',        url: 'http://localhost:3001/health' },
-  { name: 'Messaging Service',   url: 'http://localhost:3002/health' },
-  { name: 'Notification Service',url: 'http://localhost:3003/health' },
+  { name: 'API Gateway',          url: 'http://localhost:30000/health' },
+  { name: 'User Service',         url: 'http://localhost:30000/api/users/health' },
+  { name: 'Messaging Service',    url: 'http://localhost:30000/api/messages/health' },
+  { name: 'Notification Service', url: 'http://localhost:30003/health' },
 ]
 
 export default function HealthPage() {

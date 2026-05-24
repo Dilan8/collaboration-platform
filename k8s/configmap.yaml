@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: platform-config
+  namespace: collaboration
+data:
+  MONGO_URI:                "mongodb://mongodb:27017/collaboration"
+  USER_SERVICE_URL:         "http://user-service:3001"
+  MESSAGING_SERVICE_URL:    "http://messaging-service:3002"
+  NOTIFICATION_SERVICE_URL: "http://notification-service:3003"
+  NODE_ENV:                 "production"
